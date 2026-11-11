@@ -13,6 +13,8 @@ extends Panel
 
 @onready var LogExec = $MargemControles/VBoxControles/LogExec
 
+@onready var Mapa = $"../AreaMapa/MargemMapa/CanvasMapa/Mapa"
+
 const buscaScript = preload("res://scripts/funcoes/buscas.gd")
 const buscaBauScript = preload("res://scripts/funcoes/buscasBau.gd")
 
@@ -45,6 +47,7 @@ func _on_limpar_pressed () -> void:
 	Resultado.text = "Escolha um destino"
 	Peso.text = "Peso: -"
 	LogExec.clear()
+	Mapa.resetar_agente()
 
 func _on_executar_pressed () -> void:
 	var destino = Vector2i(
@@ -88,7 +91,38 @@ func _on_executar_pressed () -> void:
 		LogExec.append_text(
 			v.nome + " -> "
 		)
+		
+	salvar_caminho(resposta["caminho"], resposta["peso"], destino, nomeAlgor)
 	
+	await Mapa.movimentar_agente(resposta["caminho"], vertices)
+	
+
+func salvar_caminho(caminho: Array[Vertice], peso:int, destino: Vector2i , algoritmo: String) -> void:
+	var caminho_dir = "user://caminho.txt"
+	var arquivo = FileAccess.open(caminho_dir, FileAccess.READ_WRITE)
+	
+	if arquivo == null:
+		#nesse caso o arquivo não existe, então ele cria
+		arquivo = FileAccess.open(caminho_dir, FileAccess.WRITE)
+	
+	if arquivo == null:
+		print("Erro ao carregar arquivo: ", FileAccess.get_open_error())
+		return
+		
+	arquivo.seek_end()
+	
+	arquivo.store_line("COORDENADA DE DESTINO: %s" % str(destino))
+	arquivo.store_line("CAMINHO PERCORRIDO - BUSCA: %s" % algoritmo)
+	arquivo.store_line("--------------------------------------------")
+	
+	for vertice in caminho:
+		arquivo.store_line(vertice.nome)
+		
+	arquivo.store_line("--------------------------------------------")
+	arquivo.store_line("Peso total: %d" % peso)
+	arquivo.store_line("\n\n")
+	
+	arquivo.close()
 	
 func executar_busca_escolhida(nome: String , destino:Vertice, posDest:Vector2i) -> Dictionary:
 	var dic:Dictionary = {}

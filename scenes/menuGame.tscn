@@ -65,6 +65,8 @@ script = ExtResource("1_33283")
 
 [node name="Terrenos" type="Node2D" parent="LayoutPrincipal/AreaMapa/MargemMapa/CanvasMapa/Mapa" unique_id=927910053]
 
+[node name="Coordenadas" type="Node2D" parent="LayoutPrincipal/AreaMapa/MargemMapa/CanvasMapa/Mapa" unique_id=1683740694]
+
 [node name="Baus" type="Node2D" parent="LayoutPrincipal/AreaMapa/MargemMapa/CanvasMapa/Mapa" unique_id=185914401]
 z_index = 2
 
@@ -128,6 +130,7 @@ layout_mode = 2
 text = "Aguardando Execução"
 label_settings = SubResource("LabelSettings_utwfw")
 horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="Peso" type="Label" parent="LayoutPrincipal/PainelControles/MargemControles/VBoxControles" unique_id=669118415]
 layout_mode = 2

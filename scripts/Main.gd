@@ -4,11 +4,7 @@ func _ready() -> void:
 	var mapaGUI = $LayoutPrincipal/AreaMapa/MargemMapa/CanvasMapa/Mapa
 	var panelGUI = $LayoutPrincipal/PainelControles
 	const mapaScript = preload("res://scripts/mapa.gd")
-	const buscasScript = preload("res://scripts/funcoes/buscas.gd")
-	const buscaBauScript = preload("res://scripts/funcoes/buscasBau.gd")
 	var mapa = mapaScript.new()
-	var busca = buscasScript.new()
-	var buscaBau = buscaBauScript.new()
 	var posInicial = Vector2i(0,3)
 	mapa.criar_vertices()
 	mapa.criar_arestas()
@@ -19,8 +15,8 @@ func _ready() -> void:
 	mapaGUI.carregar_mapa(mapa.vertices, mapa.mapa)
 	mapaGUI.carregar_baus(baus_pos)
 	mapaGUI.carregar_agente(posInicial)
+	mapaGUI.carregar_coordeandas()
 	panelGUI.inicializar(mapa.vertices,posInicial, v_inicio,baus_pos,mapa.grafo)
-
-
-func _process(delta: float) -> void:
-	pass
+	var arquivo = FileAccess.open("user://caminho.txt", FileAccess.WRITE)
+	arquivo.store_line("")
+	arquivo.close()
